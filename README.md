@@ -5,8 +5,8 @@
 ---
 
 ## Train
-`python main.py {input size} {model name}`
+`python main.py {model name}`
 
 **예시**
 
-`python main.py 227 AlexNet`
+`python main.py alexnet`
