@@ -6,7 +6,8 @@ import argparse
 from load_data import *
 from models import *
 
-NUM_CLASSES = 10
+NUM_CLASSES = 10 # CIFAR10 dataset
+IMAGE_SIZE = 224
 NUM_EPOCHS = 3
 LR = 0.0001
 VAL_RATIO = 0.2
@@ -19,16 +20,16 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def parse_args():
     parser = argparse.ArgumentParser(description='train args')
-    parser.add_argument('image_size')
     parser.add_argument('model')
     args = parser.parse_args()
     return args
 
-models = {'AlexNet': AlexNet(NUM_CLASSES)}
+models = {'alexnet': AlexNet(NUM_CLASSES)}
 
 
 def train(num_epochs, train_loader, optimizer, model, loss_fn):
     for epoch in range(num_epochs):
+        # train
         train_loss = 0.0
         for i, data in enumerate(train_loader, 0):
             inputs, labels = data
@@ -46,6 +47,7 @@ def train(num_epochs, train_loader, optimizer, model, loss_fn):
                 print(f'epoch {epoch+1} [{500*(i//500 + 1)} / {len(train_loader)}] train loss: {train_loss}')
                 train_loss = 0.0
         
+        # evaluate
         with torch.no_grad():
             val_loss = 0.0
             model.eval()
@@ -61,7 +63,6 @@ def train(num_epochs, train_loader, optimizer, model, loss_fn):
 
 if __name__ == '__main__':
     args = parse_args()
-    IMAGE_SIZE = int(args.image_size)
     MODEL_NAME = args.model
 
 
